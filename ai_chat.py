@@ -76,7 +76,7 @@ def generate_puzzle(previous_questions=[]):
 Generate ONE new escape room puzzle for school students.
 
 Difficulty level:
-- Easy
+- medium
 - Fun
 - Suitable for students aged 10-18
 - Answerable within 30 seconds
@@ -99,9 +99,21 @@ Topics:
 Question rules:
 - Question should be short and clear.
 - Answer should be one word or a simple phrase.
-- The answer should be commonly known by school students.
-- Avoid confusing questions.
+- The answer should be commonly known by school and college students.
 
+Examples of difficulty:
+
+Good:
+Question: Which device is used to type on a computer?
+Answer: Keyboard
+
+Good:
+Question: Which planet is called the Red Planet?
+Answer: Mars
+
+Good:
+Question: How many sides does a triangle have?
+Answer: Three
 
 
 Previous questions to avoid:
