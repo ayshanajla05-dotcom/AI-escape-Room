@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>AI Escape Room</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="game-box">
+
+<h1>🚪 AI Escape Room</h1>
+<div id="vaultDoor" class="vault-door">
+    <div class="door-center">🔒</div>
+</div>
+
+<div class="top-bar">
+
+<div class="timer">
+⏰ Time Left:
+<span id="timer">05:00</span>
+</div>
+
+<div class="score">
+⭐ Score: {{score}}
+</div>
+
+</div>
+
+<h2>{{ puzzle.title }}</h2>
+
+<p class="question">
+
+{{ puzzle.question }}
+
+</p>
+
+<input
+id="answer"
+placeholder="Enter your answer">
+
+<br><br>
+
+<div class="button-group">
+
+    <button onclick="checkAnswer()">Submit</button>
+
+    <button onclick="skipLevel()">⏭ Skip Level</button>
+
+    <button onclick="getHint()">Need Hint</button>
+
+    <button onclick="startVoice()">🎤 Speak</button>
+
+</div>
+<p id="message"></p>
+
+</div>
+<audio id="correctSound"
+src="{{url_for('static',filename='sounds/correct.mp3')}}"></audio>
+
+<audio id="wrongSound"
+src="{{url_for('static',filename='sounds/wrong.mp3')}}"></audio>
+
+<audio id="doorSound"
+src="{{url_for('static',filename='sounds/door.mp3')}}"></audio>
+
+<script src="{{ url_for('static', filename='timer.js') }}"></script>
+
+<script>
+
+function checkAnswer(){
+
+let answer=document.getElementById("answer").value;
+
+fetch("/check",{
+
+method:"POST",
+
+headers:{
+
+'Content-Type':'application/x-www-form-urlencoded'
+
+},
+
+body:"answer="+encodeURIComponent(answer)
+
+})
+
+.then(r=>r.json())
+
+.then(data=>{
+
+if(data.correct){
+
+    document.getElementById("vaultDoor").classList.add("open-door");
+
+    document.getElementById("doorSound").play();
+
+    setTimeout(function(){
+
+        window.location = data.next;
+
+    },1500);
+
+}
+
+else{
+
+    document.querySelector(".game-box").classList.add("shake");
+
+    setTimeout(function(){
+
+        document.querySelector(".game-box").classList.remove("shake");
+
+    },500);
+
+    document.getElementById("message").innerHTML = data.message;
+
+}
+
+});
+
+}
+
+
+function getHint(){
+
+fetch("/hint")
+
+.then(r=>r.json())
+
+.then(data=>{
+
+alert("💡 Hint\n\n"+data.hint);
+
+});
+
+}
+function startVoice() {
+
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("Your browser doesn't support speech recognition. Please use Google Chrome.");
+        return;
+    }
+
+    let recognition = new webkitSpeechRecognition();
+
+    recognition.lang = "en-US";
+
+    recognition.start();
+
+    recognition.onresult = function(event) {
+
+        document.getElementById("answer").value =
+            event.results[0][0].transcript;
+
+    };
+
+}
+</script>
+<script>
+function skipLevel() {
+
+    if (confirm("Skip this puzzle? You won't get points for this level.")) {
+        window.location.href = "/skip";
+    }
+
+}
+</script>
+<div id="assistant">
+
+🤖
+
+</div>
+
+<div id="chatbox">
+
+<h3>AI Guide</h3>
+
+<p>
+
+Need help?
+
+Click Hint!
+
+</p>
+
+</div>
+<script>
+
+let robot=document.getElementById("assistant");
+
+let chat=document.getElementById("chatbox");
+
+robot.onclick=function(){
+
+if(chat.style.display=="block")
+
+chat.style.display="none";
+
+else
+
+chat.style.display="block";
+
+}
+
+</script>
+
+</body>
+</html>
