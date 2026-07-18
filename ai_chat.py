@@ -88,11 +88,10 @@ Rules:
 - Use simple concepts students already know.
 
 Topics:
-- Basic AI
+- AI
 - Computers
 - Internet
 - Mathematics
-- Space
 - General Knowledge
 - Logic puzzles
 
@@ -106,10 +105,6 @@ Examples of difficulty:
 Good:
 Question: Which device is used to type on a computer?
 Answer: Keyboard
-
-Good:
-Question: Which planet is called the Red Planet?
-Answer: Mars
 
 Good:
 Question: How many sides does a triangle have?
